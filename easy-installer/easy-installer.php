@@ -3,7 +3,7 @@
 Plugin Name: Easy Installer
 Plugin URI: https://github.com/stingray82/easy-installer
 Description: A simple plugin to download and activate WordPress plugins from a URL, including handling redirects.
-Version: 1.2
+Version: 1.3
 Author: Stingray82 & Reallyusefulplugins
 Author URI: https://Reallyusefulplugins.com
 License: GPLv2 or later
@@ -35,26 +35,62 @@ class EasyInstaller {
     }
 
     public function render_admin_page() {
-        ?>
-        <div class="wrap">
-            <h1><?php esc_html_e('Install a Plugin by URL', 'easy-installer'); ?></h1>
-            <form method="POST" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
-                <?php wp_nonce_field('ezi_install_plugin', 'ezi_nonce'); ?>
-                <input type="hidden" name="action" value="ezi_install_plugin">
-                <table class="form-table">
-                    <tr>
-                        <th><label for="plugin_url"><?php esc_html_e('Plugin URL', 'easy-installer'); ?></label></th>
-                        <td>
-                            <input type="url" id="plugin_url" name="plugin_url" class="regular-text" required>
-                            <p class="description"><?php esc_html_e('Enter the URL to the plugin\'s ZIP file (handles redirects).', 'easy-installer'); ?></p>
-                        </td>
-                    </tr>
-                </table>
-                <?php submit_button(esc_html__('Install Plugin', 'easy-installer')); ?>
-            </form>
-        </div>
-        <?php
-    }
+    ?>
+    <div class="wrap">
+        <h1><?php esc_html_e('Install a Plugin by URL', 'easy-installer'); ?></h1>
+        
+        <p style="color: red; font-weight: bold;">
+            <?php esc_html_e('⚠ Warning: Installing plugins from unknown sources can be risky. Only install from trusted sources to avoid security risks.', 'easy-installer'); ?>
+        </p>
+        <p style="color: red; font-weight: bold;">
+            <?php esc_html_e('This plugin will automatically download and install a plugin from the provided URL. If you do not fully understand the risks, please do not proceed.', 'easy-installer'); ?>
+        </p>
+
+        <form method="POST" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" id="easy-installer-form">
+            <?php wp_nonce_field('ezi_install_plugin', 'ezi_nonce'); ?>
+            <input type="hidden" name="action" value="ezi_install_plugin">
+            
+            <table class="form-table">
+                <tr>
+                    <th><label for="plugin_url"><?php esc_html_e('Plugin URL', 'easy-installer'); ?></label></th>
+                    <td>
+                        <input type="url" id="plugin_url" name="plugin_url" class="regular-text" required>
+                        <p class="description"><?php esc_html_e('Enter the URL to the plugin\'s ZIP file (handles redirects).', 'easy-installer'); ?></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><?php esc_html_e('Confirmation', 'easy-installer'); ?></th>
+                    <td>
+                        <input type="checkbox" id="confirm_installation" name="confirm_installation" required>
+                        <label for="confirm_installation">
+                            <?php esc_html_e('I understand the risks and still want to proceed with the installation.', 'easy-installer'); ?>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+
+            <p>
+                <button type="submit" id="install_plugin_button" class="button button-primary" disabled>
+                    <?php esc_html_e('Install Plugin', 'easy-installer'); ?>
+                </button>
+            </p>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var checkbox = document.getElementById('confirm_installation');
+            var submitButton = document.getElementById('install_plugin_button');
+
+            checkbox.addEventListener('change', function () {
+                submitButton.disabled = !this.checked;
+            });
+        });
+    </script>
+    <?php
+}
+
+
 
     public function handle_plugin_installation() {
         if (!current_user_can('manage_options')) {

@@ -46,6 +46,9 @@ If the plugin fails to identify the main plugin file, it will show an error mess
 
 == Changelog ==
 
+= 1.3 =
+* Added additional Warnings about the dangers of just installing a plugin.
+
 = 1.2 =
 * Handle redirected URLs gracefully.
 * Improved error handling for plugin installation.
