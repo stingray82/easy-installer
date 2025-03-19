@@ -1,15 +1,19 @@
 <?php
-/*
-Plugin Name: Easy Installer
-Plugin URI: https://github.com/stingray82/easy-installer
-Description: A simple plugin to download and activate WordPress plugins from a URL, including handling redirects.
-Version: 1.3
-Author: Stingray82 & Reallyusefulplugins
-Author URI: https://Reallyusefulplugins.com
-License: GPLv2 or later
-Text Domain: easy-installer
-Domain Path: /languages
-*/
+/**
+ * Plugin Name:       Easy Installer
+ * Tested up to:      6.7.2
+ * Description:       A simple plugin to download and activate WordPress plugins from a URL, including handling redirects.
+ * Requires at least: 6.5
+ * Requires PHP:      7.4
+ * Version:           1.3
+ * Author:            reallyusefulplugins.com
+ * Author URI:        https://reallyusefulplugins.com
+ * License:           GPL-2.0-or-later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       easy-installer
+ * Website:           https://reallyusefulplugins.com
+ * */
+
 
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
